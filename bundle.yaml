@@ -163,23 +163,9 @@ applications:
     annotations:
       gui-x: '0'
       gui-y: '-518'
-  redis:
-    charm: cs:~kubeflow-charmers/redis
-    source: ./charms/redis
-    scale: 1
-    annotations:
-      gui-x: '750'
-      gui-y: '259'
-  seldon-api-frontend:
-    charm: cs:~kubeflow-charmers/seldon-api-frontend
-    source: ./charms/seldon-api-frontend
-    scale: 1
-    annotations:
-      gui-x: '600'
-      gui-y: '0'
-  seldon-cluster-manager:
-    charm: cs:~kubeflow-charmers/seldon-cluster-manager
-    source: ./charms/seldon-cluster-manager
+  seldon:
+    charm: cs:~kubeflow-charmers/seldon
+    source: ./charms/seldon
     scale: 1
     annotations:
       gui-x: '900'
@@ -222,5 +208,3 @@ relations:
 - [pipelines-api, minio]
 - [pipelines-api, pipelines-persistence]
 - [pipelines-api, pipelines-ui]
-- [redis, seldon-api-frontend]
-- [redis, seldon-cluster-manager]
