@@ -35,6 +35,9 @@ resources:
     description: 'Proxy image'
     auto-fetch: true
     upstream-source: 'docker.io/istio/proxyv2:1.1.6'
+provides:
+  istio-policy:
+    interface: http
 storage:
   sock:
     type: filesystem

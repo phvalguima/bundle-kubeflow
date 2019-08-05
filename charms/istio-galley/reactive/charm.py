@@ -1,29 +1,33 @@
+import os
 from subprocess import run
 
 import yaml
+from charmhelpers.core import hookenv
 from charms import layer
 from charms.reactive import set_flag, clear_flag, when, when_not
 from pathlib import Path
 
 
-@when('charm.istio-galley.started')
+@when('charm.started')
 def charm_ready():
     layer.status.active('')
 
 
 @when('layer.docker-resource.oci-image.changed')
 def update_image():
-    clear_flag('charm.istio-galley.started')
+    clear_flag('charm.started')
 
 
 @when('layer.docker-resource.oci-image.available')
-@when_not('charm.istio-galley.started')
+@when_not('charm.started')
 def start_charm():
     layer.status.maintenance('configuring container')
 
     image_info = layer.docker_resource.get_info('oci-image')
 
     crds = yaml.safe_load_all(Path("files/crd.yaml").read_text())
+
+    hookenv.log(os.environ)
 
     run(
         [
@@ -133,4 +137,4 @@ def start_charm():
     )
 
     layer.status.maintenance('creating container')
-    set_flag('charm.istio-galley.started')
+    set_flag('charm.started')

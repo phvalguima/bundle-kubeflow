@@ -30,3 +30,6 @@ resources:
     description: 'Backing OCI image'
     auto-fetch: true
     upstream-source: 'docker.io/istio/proxyv2:1.1.6'
+provides:
+  istio-ingressgateway:
+    interface: http

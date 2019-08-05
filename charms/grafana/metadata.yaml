@@ -11,6 +11,9 @@ resources:
     description: 'Backing OCI image'
     auto-fetch: true
     upstream-source: 'grafana/grafana:6.0.2'
+provides:
+  grafana:
+    interface: http
 storage:
   data:
     type: filesystem

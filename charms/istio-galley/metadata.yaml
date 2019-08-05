@@ -30,3 +30,6 @@ resources:
     description: 'Backing OCI image'
     auto-fetch: true
     upstream-source: 'docker.io/istio/galley:1.1.6'
+provides:
+  istio-galley:
+    interface: http

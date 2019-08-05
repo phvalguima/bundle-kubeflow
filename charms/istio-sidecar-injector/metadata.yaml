@@ -30,3 +30,6 @@ resources:
     description: 'Backing OCI image'
     auto-fetch: true
     upstream-source: 'docker.io/istio/sidecar_injector:1.1.6'
+provides:
+  istio-sidecar-injector:
+    interface: http

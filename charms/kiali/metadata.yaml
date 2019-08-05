@@ -11,3 +11,6 @@ resources:
     description: 'Backing OCI image'
     auto-fetch: true
     upstream-source: 'docker.io/kiali/kiali:v0.16'
+provides:
+  kiali:
+    interface: http

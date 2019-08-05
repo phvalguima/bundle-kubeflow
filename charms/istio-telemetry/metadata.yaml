@@ -25,8 +25,20 @@ maintainers: [Juju Developers <juju@lists.ubuntu.com>]
 tags: [kubeflow, reverse-proxy, service-mesh]
 series: [kubernetes]
 resources:
-  oci-image:
+  mixer-image:
     type: oci-image
-    description: 'Backing OCI image'
+    description: 'Mixer image'
     auto-fetch: true
-    upstream-source: 'docker.io/istio/galley:1.1.6'
+    upstream-source: 'docker.io/istio/mixer:1.1.6'
+  proxy-image:
+    type: oci-image
+    description: 'Proxy image'
+    auto-fetch: true
+    upstream-source: 'docker.io/istio/proxyv2:1.1.6'
+provides:
+  istio-telemetry:
+    interface: http
+storage:
+  sock:
+    type: filesystem
+    location: /sock

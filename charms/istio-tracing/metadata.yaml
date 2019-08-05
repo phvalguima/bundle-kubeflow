@@ -30,3 +30,6 @@ resources:
     description: 'Backing OCI image'
     auto-fetch: true
     upstream-source: 'docker.io/jaegertracing/all-in-one:1.9'
+provides:
+  istio-tracing:
+    interface: http

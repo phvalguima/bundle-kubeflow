@@ -11,3 +11,6 @@ resources:
     description: 'Backing OCI image'
     auto-fetch: true
     upstream-source: 'docker.io/prom/prometheus:v2.3.1'
+provides:
+  prometheus:
+    interface: http
