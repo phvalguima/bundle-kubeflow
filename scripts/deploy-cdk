@@ -59,6 +59,7 @@ def parse_args():
     create_args.add_argument(
         '--ci', action='store_true', help='Deploys bundle with bits appropriate for CI'
     )
+    create_args.add_argument('--wait', default='900', help='How long to wait for charms to boot up')
 
     destroy_args.add_argument(
         '--controller', default='cdkkf', help='The controller in which to destroy the cloud'
@@ -96,7 +97,7 @@ def info(controller: str, model: str):
     print(textwrap.dedent(message))
 
 
-def create(controller: str, cdk_model: str, model: str, channel: str, build: bool, ci: bool):
+def create(controller: str, cdk_model: str, model: str, channel: str, build: bool, ci: bool, wait: str):
     """Deploy Kubeflow to a CDK cluster."""
 
     require('juju', 'juju-wait', 'juju-kubectl:juju-helpers', 'juju-bundle:juju-helpers')
@@ -167,7 +168,7 @@ def create(controller: str, cdk_model: str, model: str, channel: str, build: boo
     else:
         run('juju', 'deploy', 'kubeflow', '--channel', channel)
 
-    run('juju', 'wait', '-e', f'{controller}:{model}', '-vw')
+    run('juju', 'wait', '-e', f'{controller}:{model}', '-vwt', wait)
 
     # General Kubernetes setup.
     for f in glob('charms/*/resources/*.yaml'):
@@ -223,6 +224,7 @@ if __name__ == '__main__':
             parsed.channel,
             parsed.build,
             parsed.ci,
+            parsed.wait,
         )
     elif parsed.command == 'destroy':
         destroy(parsed.cloud, parsed.cloud, parsed.model, parsed.purge)

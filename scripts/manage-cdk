@@ -30,6 +30,7 @@ def parse_args():
         '--controller', default='cdkkf', help='Name to use for created controller'
     )
     create_args.add_argument('--model', default='default', help='Juju model name to spin up CDK in')
+    create_args.add_argument('--wait', default='900', help='How long to wait for CDK to boot up')
 
     destroy_args.add_argument('--controller', default='cdkkf', help='Name of controller to destroy')
     destroy_args.add_argument(
@@ -79,7 +80,7 @@ def info(controller: str, model: str):
     )
 
 
-def create(cloud: str, region: str, controller: str, model: str):
+def create(cloud: str, region: str, controller: str, model: str, wait: str):
     """Create CDK on given cloud."""
 
     require('juju', 'juju-wait')
@@ -95,7 +96,7 @@ def create(cloud: str, region: str, controller: str, model: str):
     run('juju', 'add-relation', f'{cloud}-integrator', 'kubernetes-worker')
 
     # Wait for cloud to finish booting up
-    run('juju', 'wait', '-e', f'{controller}:{model}', '-vw')
+    run('juju', 'wait', '-e', f'{controller}:{model}', '-vwt', wait)
 
     run('juju', 'expose', 'kubeapi-load-balancer')
 
@@ -103,7 +104,7 @@ def create(cloud: str, region: str, controller: str, model: str):
 
     print(f'\nCongratulations, CDK is now available. Took {int(end - start)} seconds.')
 
-    info(controller)
+    info(controller, model)
 
 
 def destroy(controller: str, args: List[str]):
@@ -118,7 +119,7 @@ if __name__ == '__main__':
     parsed = parse_args()
 
     if parsed.command == 'create':
-        create(parsed.cloud, parsed.region, parsed.controller, parsed.model)
+        create(parsed.cloud, parsed.region, parsed.controller, parsed.model, parsed.wait)
     elif parsed.command == 'destroy':
         destroy(parsed.controller, parsed.args)
     elif parsed.command == 'info':
